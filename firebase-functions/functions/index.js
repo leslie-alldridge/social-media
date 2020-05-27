@@ -1,10 +1,12 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
+const app = require('express')();
+
 admin.initializeApp();
 
-const express = require('express');
-const app = express();
+const firebase = require('firebase');
+firebase.initializeApp(config);
 
 app.get('/screams', (req, res) => {
   admin
@@ -44,6 +46,16 @@ app.post('/screams', (req, res) => {
       res.status(500).json({ error: `Something went wrong` });
       console.error(err);
     });
+});
+
+// Sign up route
+app.post('/signup', (req, res) => {
+  const newUser = {
+    email: req.body.email,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    handle: req.body.handle,
+  };
 });
 
 exports.api = functions.https.onRequest(app);
