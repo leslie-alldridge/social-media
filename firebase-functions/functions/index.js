@@ -6,6 +6,8 @@ const app = require('express')();
 admin.initializeApp();
 
 const firebase = require('firebase');
+const config = require('./util/config');
+
 firebase.initializeApp(config);
 
 const db = admin.firestore();
