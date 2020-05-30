@@ -30,7 +30,24 @@ app.get('/screams', (req, res) => {
     });
 });
 
-app.post('/screams', (req, res) => {
+const FBAuth = (req, res, next) => {
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    console.error('No token found');
+    return res.status(403).json({ error: 'Unauthorized' });
+  }
+};
+
+app.post('/scream', FBAuth, (req, res) => {
+  if (req.body.trim() === '') {
+    return res.status(400).json({ body: 'Body must not be empty' });
+  }
+
   const newScream = {
     body: req.body.body,
     userHandle: req.body.userHandle,
